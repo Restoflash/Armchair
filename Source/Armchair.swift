@@ -1256,10 +1256,7 @@ open class Manager : ArmchairManager {
             }
         } else {
             #if os(iOS)
-                if requestStoreKitReviewPrompt() {
-                    ///Showed storekit prompt, all done
-                    
-                } else {
+            
                     /// Didn't show storekit prompt, present app store manually
                     let alertView : UIAlertController = UIAlertController(title: reviewTitle, message: reviewMessage, preferredStyle: UIAlertControllerStyle.alert)
                     alertView.addAction(UIAlertAction(title: cancelButtonTitle, style:UIAlertActionStyle.default, handler: {
@@ -1274,7 +1271,14 @@ open class Manager : ArmchairManager {
                     }
                     alertView.addAction(UIAlertAction(title: rateButtonTitle, style:UIAlertActionStyle.cancel, handler: {
                         (alert: UIAlertAction!) in
-                        self._rateApp()
+                        if self.requestStoreKitReviewPrompt() {
+                            ///Showed storekit prompt, all done
+                            
+                        }
+                        else
+                        {
+                            self._rateApp()
+                        }
                     }))
 
                     ratingAlert = alertView
@@ -1292,7 +1296,7 @@ open class Manager : ArmchairManager {
                         // note that tint color has to be set after the controller is presented in order to take effect (last checked in iOS 9.3)
                         alertView.view.tintColor = tintColor
                     }
-                }
+            
                 
             #elseif os(OSX)
                 
