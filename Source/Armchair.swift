@@ -1273,7 +1273,9 @@ open class Manager : ArmchairManager {
                         (alert: UIAlertAction!) in
                         if self.requestStoreKitReviewPrompt() {
                             ///Showed storekit prompt, all done
-                            
+                            if let closure = self.didOptToRateClosure {
+                                closure()
+                            }
                         }
                         else
                         {
